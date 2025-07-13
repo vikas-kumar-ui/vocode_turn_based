@@ -15,18 +15,18 @@ DEEPGRAM_API_KEY = "d936d0b7e6b8827137a9a7c10cf38163ed5ce2dc"
 
 def test_turn_based_conversation():
     print("🎤 Initializing test for TurnBasedConversation...")
-    devices = sd.query_devices()
-    print(devices)
-    device_id = int(input("Enter input device index: "))
-    sd.default.device = device_id
+    # devices = sd.query_devices()
+    # print(devices)
+    # device_id = int(input("Enter input device index: "))
+    # sd.default.device = device_id
 
 
     
  
-    input_devices = [d for d in devices if d["max_input_channels"] > 0]
+    # input_devices = [d for d in devices if d["max_input_channels"] > 0]
 
     # Set up each component
-    input_device = MicrophoneInput(input_devices[device_id])
+    input_device = MicrophoneInput.from_default_device()
     transcriber = DeepgramTranscriber(api_key=DEEPGRAM_API_KEY)
     agent = GroqAgent(
         api_key=GROQ_API_KEY,

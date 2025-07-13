@@ -18,4 +18,13 @@ class GTTSSynthesizer(BaseSynthesizer):
         audio_file = BytesIO()
         tts.write_to_fp(audio_file)
         audio_file.seek(0)
-        return AudioSegment.from_mp3(audio_file)  # type: ignore
+        audio = AudioSegment.from_mp3(audio_file)  # type: ignore
+
+        # Speed up the audio by 1.2x (adjust factor as needed)
+        faster_audio = self._speed_up(audio, speed=1.1)
+        return faster_audio
+    
+    def _speed_up(self, sound: AudioSegment, speed: float) -> AudioSegment:
+        # Manipulate frame rate to change speed
+        new_frame_rate = int(sound.frame_rate * speed)
+        return sound._spawn(sound.raw_data, overrides={"frame_rate": new_frame_rate}).set_frame_rate(sound.frame_rate)
