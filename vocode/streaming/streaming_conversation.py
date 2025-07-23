@@ -902,6 +902,7 @@ class StreamingConversation(Generic[OutputDeviceType]):
         if self.transcriber.get_transcriber_config().mute_during_speech:
             logger.debug("Muting transcriber")
             self.transcriber.mute()
+            
         message_sent = message
         cut_off = False
         chunk_size = self._get_synthesizer_chunk_size(seconds_per_chunk)
@@ -952,6 +953,10 @@ class StreamingConversation(Generic[OutputDeviceType]):
                 transcript_message.text = synthesis_result.get_message_up_to(seconds_spoken)
         get_chunks_task.cancel()
         if self.transcriber.get_transcriber_config().mute_during_speech:
+            # logger.debug("Unmuting transcriber")
+            # self.transcriber.unmute()
+            logger.debug("Waiting to unmute transcriber...")
+            await asyncio.sleep(0.25)  # Small delay to let final audio play out
             logger.debug("Unmuting transcriber")
             self.transcriber.unmute()
         if transcript_message:

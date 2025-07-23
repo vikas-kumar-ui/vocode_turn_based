@@ -41,7 +41,7 @@ class GroqAgent(RespondAgent[GroqAgentConfig]):
             action_factory=action_factory,
             **kwargs,
         )
-        self.groq_client = AsyncGroq(api_key="ENterGroqAPIKey")
+        self.groq_client = AsyncGroq(api_key=self.agent_config.groq_api_key)
 
         if not self.groq_client.api_key:
             raise ValueError("GROQ_API_KEY must be set in environment or passed in")
