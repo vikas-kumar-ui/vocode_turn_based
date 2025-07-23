@@ -30,6 +30,7 @@ OPENAI_GPT_4_1106_PREVIEW_MODEL_NAME = "gpt-4-1106-preview"
 ANTHROPIC_CLAUDE_3_HAIKU_MODEL_NAME = "claude-3-haiku-20240307"
 ANTHROPIC_CLAUDE_3_SONNET_MODEL_NAME = "claude-3-sonnet-20240229"
 ANTHROPIC_CLAUDE_3_OPUS_MODEL_NAME = "claude-3-opus-20240229"
+GROQ_DEFAULT_MODEL_NAME = "llama3-70b-8192"
 
 InterruptSensitivity = Literal["low", "high"]
 
@@ -49,6 +50,7 @@ class AgentType(str, Enum):
     WEBSOCKET_USER_IMPLEMENTED = "agent_websocket_user_implemented"
     ACTION = "agent_action"
     LANGCHAIN = "agent_langchain"
+    GROQ = "agent_groq"
 
 
 class FillerAudioConfig(BaseModel):
@@ -125,6 +127,17 @@ class ChatGPTAgentConfig(AgentConfig, type=AgentType.CHAT_GPT.value):  # type: i
     first_response_filler_message: Optional[str] = None
     llm_fallback: Optional[LLMFallback] = None
 
+class GroqAgentConfig(AgentConfig, type=AgentType.GROQ.value):  # type: ignore
+    groq_api_key: Optional[str] = None
+    prompt_preamble: str
+    model_name: str = GROQ_DEFAULT_MODEL_NAME
+    temperature: float = LLM_AGENT_DEFAULT_TEMPERATURE
+    max_tokens: int = LLM_AGENT_DEFAULT_MAX_TOKENS
+    vector_db_config: Optional[VectorDBConfig] = None
+    # TODO: the below fields should moved up to AgentConfig, and their logic should live in BaseAgent
+    use_backchannels: bool = False
+    backchannel_probability: float = 0.7
+    first_response_filler_message: Optional[str] = None
 
 class AnthropicAgentConfig(AgentConfig, type=AgentType.ANTHROPIC.value):  # type: ignore
     prompt_preamble: str
