@@ -10,11 +10,11 @@ from vocode.turn_based.turn_based_conversation import TurnBasedConversation  # r
 import os
 
 # Load your API keys from env or paste directly here
-GROQ_API_KEY = "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"
-DEEPGRAM_API_KEY = "d936d0b7e6b8827137a9a7c10cf38163ed5ce2dc"
+GROQ_API_KEY = "GROQ_API_KEY"
+DEEPGRAM_API_KEY = "DEEPGRAM_API_KEY"
 
 def test_turn_based_conversation():
-    print("🎤 Initializing test for TurnBasedConversation...")
+    print("Initializing test for TurnBasedConversation...")
     # devices = sd.query_devices()
     # print(devices)
     # device_id = int(input("Enter input device index: "))
@@ -47,13 +47,29 @@ def test_turn_based_conversation():
     )
 
     # Start listening and processing one response
-    input("🎙️ Press Enter to start speaking...")
-    convo.start_speech()
-    input("🛑 Press Enter to stop speaking and get a response...")
-    convo.end_speech_and_respond()
+    # input("Press Enter to start speaking...")
+    # convo.start_speech()
+    # input("Press Enter to stop speaking and get a response...")
+    # convo.end_speech_and_respond()
 
-    print("✅ Conversation cycle complete.")
-    output_device.terminate()
+    # print("Conversation cycle complete.")
+    # output_device.terminate()
+
+
+    try:
+        while True:
+            user_input = input("🎙️ Press Enter to speak (or type 'q' to quit): ")
+            if user_input.strip().lower() == 'q':
+                break
+
+            convo.start_speech()
+            input("Press Enter to stop speaking and get a response...")
+            convo.end_speech_and_respond()
+    except KeyboardInterrupt:
+        print("\nConversation interrupted by user.")
+    finally:
+        print("Ending conversation.")
+        output_device.terminate()
 
 if __name__ == "__main__":
     test_turn_based_conversation()
